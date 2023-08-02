@@ -21,4 +21,6 @@ In the script, it is set to `sh chrome_driver_path = "C:\\ProgramData\\chocolate
 
 At the bottom, the WPM is meant to be changed before running the script: `typing_wpm = 150` This number is not completely accurate but it will get you around the number. Set it to whatever you want.
 
-The script is toggled through the `SHIFT` key, it stops after it completes its process.
+The script is toggled through the `SHIFT` key.
+
+Does not pass bot detection so use at your own risk.
