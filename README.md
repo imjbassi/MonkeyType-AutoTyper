@@ -19,4 +19,5 @@ Make sure the Chrome Driver path is set to the right executable.
 In the script, it is set to `sh chrome_driver_path = "C:\\ProgramData\\chocolatey\\lib\\chromedriver\\tools\\chromedriver.exe"` but you may want to change it.
 At the bottom, the WPM is meant to be changed before running the script: `typing_wpm = 150`
 * This number is not completely accurate but it will get you around the number. Set it to whatever you want.
+
 The script is toggled through the `SHIFT` key, it stops after it completes its process.
