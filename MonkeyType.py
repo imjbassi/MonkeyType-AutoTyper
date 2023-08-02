@@ -5,42 +5,42 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import keyboard  # Import the keyboard module
+import keyboard
+from selenium.common.exceptions import NoSuchElementException
 
-# Replace "[put executable path]" with the actual path to the Chrome WebDriver
 chrome_driver_path = "C:\\ProgramData\\chocolatey\\lib\\chromedriver\\tools\\chromedriver.exe"
 service = webdriver.chrome.service.Service(chrome_driver_path)
 driver = webdriver.Chrome(service=service)
 
-class outOfTurnException(Exception):
-    pass
-
-class usefulMethods:
-    @staticmethod
-    def get_element_and_click(by, element):
-        w = driver.find_element(by, element)
-        w.click()
-
-    @staticmethod
-    def send_keys(keys):
-        ActionChains(driver).send_keys(keys).perform()
-
-# Navigate to the website
 driver.get("https://monkeytype.com/")
 
-# Wait until the element with CSS selector 'div[mode="words"]' becomes clickable
-WebDriverWait(driver, 15).until(
-    EC.element_to_be_clickable((By.CSS_SELECTOR, 'div[mode="words"]'))
-)
+# Function to handle the cookie popup
+def handle_cookie_popup():
+    try:
+        # Wait for the cookie popup to appear
+        cookie_popup_selector = (By.ID, "cookiePopupWrapper")
+        wait.until(EC.visibility_of_element_located(cookie_popup_selector))
 
-# Click on the element with CSS selector 'div[mode="words"]' to set typing mode to "words"
-usefulMethods.get_element_and_click(By.CSS_SELECTOR, 'div[mode="words"]')
+        # Wait for the cookie popup to disappear
+        wait.until(EC.invisibility_of_element_located(cookie_popup_selector))
+    except Exception as e:
+        # If any exception, print error and continue, not close
+        print("Error handling cookie popup: ", str(e))
 
-# Set an implicit wait of 1 second for the driver
-driver.implicitly_wait(1)
+# div[mode="words"]  clickable
+wait = WebDriverWait(driver, 15)
+mode_selector = (By.CSS_SELECTOR, 'div[mode="words"]')
+wait.until(EC.element_to_be_clickable(mode_selector))
 
-# Function to calculate the typing delay in seconds based on WPM
+handle_cookie_popup()
+
+# Click on div[mode="words"]
+driver.find_element(*mode_selector).click()
+
+# Typing delay even though I did the calculations at the bottom
 def calculate_typing_delay(wpm, word_length=5):
+    if wpm == 0:
+        return 0
     target_time_per_word = 60 / wpm
     return target_time_per_word / (word_length / 5)
 
@@ -52,35 +52,37 @@ def automate_typing(wpm=100):
         if keyboard.is_pressed("SHIFT"):
             typing_enabled = not typing_enabled
             print("Typing has been", "enabled" if typing_enabled else "disabled")
-            # Wait for a brief moment to avoid rapid toggling due to key holding
             while keyboard.is_pressed("SHIFT"):
                 pass
         
         if typing_enabled:
-            words = driver.find_element(By.ID, "words")
+            try:
+                # Find the active word and get its text
+                active_word = driver.find_element(By.CSS_SELECTOR, 'div.word.active')
+                word_text = active_word.text
 
-            # Find the active word
-            active_word = words.find_element(By.CSS_SELECTOR, 'div[class="word active"]')
+                # Type the entire word at once using ActionChains
+                ActionChains(driver).send_keys(word_text).perform()
 
-            # Find all the letters of the active word by selecting elements with the tag name "letter"
-            letters = active_word.find_elements(By.TAG_NAME, "letter")
+                # Introduce a delay between typing each word based on the WPM
+                time.sleep(calculate_typing_delay(wpm, len(word_text)))
 
-            l = []
+                # Simulate pressing SPACE to move to the next word
+                ActionChains(driver).send_keys(Keys.SPACE).perform()
+            except NoSuchElementException:
+                # If NoSuchElementException occurs, there are no more words to type
+                print("All words typed. Stopping typing.")
+                typing_enabled = False
+            except Exception as e:
+                # Exception, just print error and continue
+                print("Error while typing: ", str(e))
+                continue
 
-            for letter in letters:
-                l.append(letter.text)
-
-            for letter in l:
-                # Simulate typing each letter
-                usefulMethods.send_keys(letter)
-                # Introduce a delay between typing each letter based on the WPM
-                time.sleep(calculate_typing_delay(wpm, len(l)))
-
-            # Simulate pressing the SPACE key to move to the next word
-            usefulMethods.send_keys(Keys.SPACE)
-
-# User-configurable WPM variable (change this value to set the typing speed)
 typing_wpm = 150
 
-# Call the function to start the typing automation with the desired WPM speed
-automate_typing(typing_wpm*5.5556)
+automate_typing(typing_wpm * 1.333327)
+# calculations below trying to find out how to get the right wpm
+# previous values: 5.5556, 7, 3.4, 1.7, 1.333327
+# 25 words (512, 464, 525, 580, 477) = 511.6, 50 words(543, 528, 481, 507, 483) = 508.4
+# (508.4 + 511.6)/2 = 510
+# 200/255, 1.7*0.78431 = 1.333327 im sticking to this its close enough
