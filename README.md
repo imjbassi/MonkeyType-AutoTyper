@@ -11,6 +11,8 @@
 [Keyboard](https://pypi.org/project/keyboard/)
 `pip install keyboard`
 
+Can also install required dependencies using `pip install -r requirements.txt`
+
 ## Running
 
 Make sure the Chrome Driver path is set to the right executable.
