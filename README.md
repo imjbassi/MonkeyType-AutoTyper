@@ -3,13 +3,20 @@
 ## Dependencies & Installation (Windows)
 
 [ChromeDriver](https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver/01fde32d0ed245141e24151f83b7c2db31d596a4)
-`choco install chromedriver`
+
+<img src="https://raw.githubusercontent.com/imjbassi/MonkeyType-AutoTyper/main/images/choco%20install%20chromedriver.png" width="200">
 
 [Selenium](https://pypi.org/project/selenium/)
-`pip install selenium`
+
+<img src="https://raw.githubusercontent.com/imjbassi/MonkeyType-AutoTyper/main/images/pip%20install%20selenium.png" width="200">
 
 [Keyboard](https://pypi.org/project/keyboard/)
-`pip install keyboard`
+
+<img src="https://raw.githubusercontent.com/imjbassi/MonkeyType-AutoTyper/main/images/pip%20install%20keyboard.png" width="200">
+
+[Argprase](https://pypi.org/project/argparse/)
+
+<img src="https://raw.githubusercontent.com/imjbassi/MonkeyType-AutoTyper/main/images/pip%20install%20argparse.png" width="200">
 
 Can also install required dependencies using `pip install -r requirements.txt`
 
