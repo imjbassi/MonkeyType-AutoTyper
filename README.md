@@ -68,3 +68,5 @@ Does not always pass bot detection and remember to **use it at your own risk!**
 
 9. **Comments and Formatting:**
    - Code is well-commented and properly formatted for readability.
+
+<sup>Comments removed using http://www.removecomments.com/ and image created using https://carbon.vercel.app/</sup>
