@@ -16,7 +16,7 @@
 
 [Argprase](https://pypi.org/project/argparse/)
 
-<img src="https://raw.githubusercontent.com/imjbassi/MonkeyType-AutoTyper/main/images/pip%20install%20argparse.png" width="200">
+<img src="" width="200">
 
 Can also install required dependencies using `pip install -r requirements.txt`
 
